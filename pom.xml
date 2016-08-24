@@ -12,6 +12,7 @@
         <module>clannad-concurrent</module>
         <module>clannad-pattern</module>
         <module>clannad-spring</module>
+        <module>clannad-annotation</module>
     </modules>
 
 
