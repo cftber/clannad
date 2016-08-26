@@ -1,0 +1,20 @@
+使用注解来构造IoC容器：
+    1. 用注解来向Spring容器注册Bean。需要在applicationContext.xml中注册<context:component-scan base-package=”pagkage1[,pagkage2,…,pagkageN]”/>。
+    <context:component-scan base-package="cn.gacl.java"/> 表明cn.gacl.java包及其子包中，如果某个类的头上带有特定的注解【@Component/@Repository/@Service/@Controller】，就会将这个对象作为Bean注册进Spring容器
+
+1、@Component
+    是所有受Spring 管理组件的通用形式，@Component注解可以放在类的头上，@Component不推荐使用
+2、@Controller
+    @Controller对应表现层的Bean
+    spring 默认scope 是单例模式(scope="singleton")，这样只会创建一个Action对象
+3、@ Service
+    @Service对应的是业务层Bean
+4、@ Repository
+    @Repository对应数据访问层Bean
+
+Spring @Resource、@Autowired、@Qualifier的注解注入及区别:
+    1. @Resource默认是按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来装配注入；
+    2. @Autowired默认是按照类型装配注入的，如果想按照名称来转配注入，则需要结合@Qualifier一起使用；
+    3. @Resource注解是又J2EE提供，而@Autowired是由Spring提供，故减少系统对spring的依赖建议使用@Resource的方式；
+    4. @Resource和@Autowired都可以书写标注在字段或者该字段的setter方法之上
+
