@@ -14,6 +14,7 @@
         <module>clannad-spring</module>
         <module>clannad-annotation</module>
         <module>clannad-common</module>
+        <module>clannad-unittest</module>
     </modules>
 
     <properties>
@@ -31,6 +32,8 @@
 
         <spring.version>4.1.2.RELEASE</spring.version>
         <commons-logging.version>1.1</commons-logging.version>
+
+        <junit.version>4.10</junit.version>
     </properties>
 
     <dependencies>
@@ -96,6 +99,13 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>${commons-logging.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
