@@ -15,6 +15,7 @@
         <module>clannad-annotation</module>
         <module>clannad-common</module>
         <module>clannad-unittest</module>
+        <module>clannad-core</module>
     </modules>
 
     <properties>
