@@ -1,0 +1,99 @@
+
+http://www.cnblogs.com/rollenholt/archive/2011/09/02/2163758.html
+
+Reflect:
+基本用法:
+Java 反射API的第一个主要作用是获取程序在运行时刻的内部结构。
+反射API的另外一个作用是在运行时刻对一个Java对象进行操作
+
+注：*********
+使用Java反射API的时候可以绕过Java默认的访问控制检查，比如可以直接获取到对象的私有域的值或是调用私有方法。
+只需要在获取到Constructor、Field和Method类的对象之后，调用setAccessible方法并设为true即可。有了这种机制，就可以很方便的在运行时刻获取到程序的内部状态
+
+Class<?> demo=Class.forName("Reflect.Person");
+1. 获得其他类中的全部构造函数
+Constructor<?>cons[]=demo.getConstructors();
+2. 取得其他类中的父类
+ Class<?> temp=demo.getSuperclass();
+3. 返回一个类实现的接口：
+Class<?> intes[]=demo.getInterfaces();
+4. 通过Class调用其他类中的构造函数
+Constructor<?> cons[]=demo.getConstructors();
+
+5. 获取参数列表，获取修饰符
+Constructor<?>cons[]=demo.getConstructors();
+构造函数参数列表
+Class<?> p[]=cons[i].getParameterTypes();
+构造函数修饰符--public or private
+int mo=cons[i].getModifiers();
+System.out.print(Modifier.toString(mo)+" ");
+
+6. 获取方法列表，返回参数，异常信息
+Method method[]=demo.getMethods();
+
+Class<?> returnType=method[i].getReturnType();
+System.out.print(returnType.getName()+"  ");
+
+Class<?> exce[]=method[i].getExceptionTypes();
+
+// 取得本类的全部属性
+Field[] field = demo.getDeclaredFields();
+
+// 权限修饰符
+int mo = field[i].getModifiers();
+String priv = Modifier.toString(mo);
+
+// 属性类型
+Class<?> type = field[i].getType();
+
+// 取得实现的接口或者父类的属性
+Field[] filed1 = demo.getFields();
+
+7. 通过反射调用其他类中的方法
+//调用Person类中的sayChina方法
+ Method method=demo.getMethod("sayChina");
+ method.invoke(demo.newInstance());
+ //调用Person的sayHello方法
+ method=demo.getMethod("sayHello", String.class,int.class);
+ method.invoke(demo.newInstance(),"Rollen",20);
+
+8. 通过反射操作属性
+Object obj = null;
+
+ demo = Class.forName("Reflect.Person");
+ obj = demo.newInstance();
+
+ Field field = demo.getDeclaredField("sex");
+ field.setAccessible(true);
+ field.set(obj, "男");
+ System.out.println(field.get(obj));
+
+9. 通过反射取得并修改数组的信息
+        int[] temp={1,2,3,4,5};
+        Class<?>demo=temp.getClass().getComponentType();
+        System.out.println("数组类型： "+demo.getName());
+        System.out.println("数组长度  "+Array.getLength(temp));
+        System.out.println("数组的第一个元素: "+Array.get(temp, 0));
+        Array.set(temp, 0, 100);
+        System.out.println("修改之后数组第一个元素为： "+Array.get(temp, 0));
+
+10. 通过反射修改数组大小
+    /**
+     * 修改数组大小
+     * */
+    public static Object arrayInc(Object obj,int len){
+        Class<?>arr=obj.getClass().getComponentType();
+        Object newArr=Array.newInstance(arr, len);
+        int co=Array.getLength(obj);
+        System.arraycopy(obj, 0, newArr, 0, co);
+        return newArr;
+    }
+
+
+动态代理：
+1. 如何获得类加载器
+        test t=new test();
+        System.out.println("类加载器  "+t.getClass().getClassLoader().getClass().getName());
+        //类加载器  sun.misc.Launcher$AppClassLoader
+
+
