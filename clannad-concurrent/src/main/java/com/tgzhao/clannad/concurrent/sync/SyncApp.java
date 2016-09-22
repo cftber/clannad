@@ -1,13 +1,24 @@
 package com.tgzhao.clannad.concurrent.sync;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * Created by tgzhao on 2016/9/9.
  */
 public class SyncApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        syncLockTest();
+        //SyncMethodTest2();
         //SyncThreadTest1();
-        SyncMethodTest();
+        //SyncMethodTest();
     }
 
     public static void SyncThreadTest1() {
@@ -51,6 +62,28 @@ public class SyncApp {
     }
 
     /**
+     * thread1 与thread2 调用同一个syncmethod
+     * 对象内置锁,同一时刻只能一个线程持有
+     */
+    static void SyncMethodTest2() {
+
+        final SyncMethod method = new SyncMethod();
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                method.runNonStatic();
+            }
+        });
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                method.runNonStatic2();
+            }
+        });
+        thread1.start();
+        thread2.start();
+    }
+    /**
      * synchronized作用于一个类T时，是给这个类T加锁，T的所有对象用的是同一把锁
      */
     static void syncClassTest() {
@@ -59,5 +92,40 @@ public class SyncApp {
         Thread thread2 = new Thread(new SyncClass(), "SyncThread2");
         thread1.start();
         thread2.start();
+    }
+
+    static void syncLockTest() throws InterruptedException {
+        Map<String, String> conmap = new ConcurrentHashMap<>();
+        ConcurrentMap<String, String> concurrentMap = new ConcurrentHashMap<>();
+        //Map<String, String> map = new HashMap<>();
+        Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
+
+        System.out.println("before add map");
+        addMap(conmap);
+        System.out.println("after add map");
+        Thread.sleep(1000);
+        //synchronized (map) {
+        conmap.put("testt22", "testvalue22");
+
+        //}
+
+        System.out.println("after add map2222");
+    }
+
+    static void addMap(final Map<String, String> map) throws InterruptedException {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (map) {
+                    map.put("testt", "testvalue");
+                    try {
+                        Thread.sleep(5*1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 }

@@ -27,7 +27,18 @@ public class SyncMethod {
         for (int i = 0; i < 5; i ++) {
             try {
                 System.out.println(Thread.currentThread().getName() + ":" + (i));
-                Thread.sleep(100);
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized void runNonStatic2() {
+        for (int i = 10; i < 15; i ++) {
+            try {
+                System.out.println(Thread.currentThread().getName() + ":" + (i));
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

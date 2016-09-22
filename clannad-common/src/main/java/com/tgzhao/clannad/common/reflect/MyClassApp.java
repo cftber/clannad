@@ -93,7 +93,7 @@ class MyClass {
         count = count + step;
     }
 
-    public List getList(final List list) {
+    /*public List getList(final List list) {
         return (List) Proxy.newProxyInstance(DummyProxy.class.getClassLoader(), new Class[] { List.class },
                 new InvocationHandler() {
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -105,5 +105,5 @@ class MyClass {
                         }
                     }
                 });
-    }
+    }*/
 }
