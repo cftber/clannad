@@ -16,6 +16,7 @@
         <module>clannad-common</module>
         <module>clannad-unittest</module>
         <module>clannad-core</module>
+        <module>clannad-kafka</module>
     </modules>
 
     <properties>
@@ -127,6 +128,7 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>
