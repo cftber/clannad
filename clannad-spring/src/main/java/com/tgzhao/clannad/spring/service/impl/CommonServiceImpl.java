@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 /**
  * Created by tgzhao on 2016/8/26.
  */
-@Service("commonService")
 public class CommonServiceImpl implements ICommonService {
 
     @Autowired
