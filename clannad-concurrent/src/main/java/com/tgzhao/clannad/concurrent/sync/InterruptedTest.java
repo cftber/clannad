@@ -13,6 +13,12 @@ public class InterruptedTest extends Thread {
 
     public void run(){
         while(true){
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             if(Thread.interrupted()){
                 System.out.println("Someone interrupted me.");
                 //interrupt当前线程不会抛出异常

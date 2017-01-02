@@ -1,6 +1,6 @@
 package com.tgzhao.clannad.concurrent.pexecutor;
 
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,14 +12,58 @@ public class ExecutorApp {
 
     private static AtomicInteger ai = new AtomicInteger(1);
     public static void main(String[] args) {
-//        ThreadPoolExecutor tp = new ThreadPoolExecutor(1, 4, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(30));
+        ExecutorService ss = Executors.newFixedThreadPool(2);
+        Executors.newFixedThreadPool(3);
+
+        ThreadPoolExecutor dd = new ThreadPoolExecutor(2,2,2, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>(100));
+
+        dd.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        dd.prestartAllCoreThreads();
+        dd.prestartCoreThread();
+        ss.execute(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("haha");
+            }
+        });
+         ExecutorService executorService = Executors.newFixedThreadPool(3, new ThreadFactory() {
+             @Override
+             public java.lang.Thread newThread(Runnable r) {
+                 Thread t = new Thread(r);
+                 t.setDaemon(true);
+                 return t;
+             }
+         });
+
+        List list = Collections.synchronizedList(new LinkedList());
+        //CopyOnWriteArrayList
+        ThreadPoolExecutor tp = new ThreadPoolExecutor(1, 4, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(30),
+                new ThreadPoolExecutor.CallerRunsPolicy()); //调用者运行策略
 //        Executors.newFixedThreadPool(3);
 
 
         Executor executor = Executors.newFixedThreadPool(4);
 
         for (int i=0; i<100; i++) {
-            executor.execute(new ThreadLocalDemo());
+            try {
+                tp.execute(new ThreadLocalDemo());
+                java.lang.Thread.sleep(100);
+
+            } catch (Exception ex) {
+                System.out.println("error is :" + ex);
+                System.out.println("curent i is :" + i);
+            }
+
         }
         /*for (int i=0; i<100; i++) {
             executor.execute(new Runnable() {
@@ -45,6 +89,11 @@ class ThreadLocalDemo implements Runnable
     private static Random random = new Random();
     @Override
     public void run() {
+        try {
+            java.lang.Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (threadLocal.get() == null) {
             threadLocal.set(random.nextInt(1000000));
             System.out.println("111 " + threadLocal.get());
@@ -55,3 +104,5 @@ class ThreadLocalDemo implements Runnable
         //threadLocal.remove();
     }
 }
+
+

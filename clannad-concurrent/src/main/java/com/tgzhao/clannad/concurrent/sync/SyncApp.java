@@ -15,7 +15,8 @@ import java.util.concurrent.Executors;
 public class SyncApp {
 
     public static void main(String[] args) throws InterruptedException {
-        syncLockTest();
+        SyncMethodTest();
+//        syncLockTest();
         //SyncMethodTest2();
         //SyncThreadTest1();
         //SyncMethodTest();
@@ -45,7 +46,7 @@ public class SyncApp {
                 method2.run();
             }
         }, "SyncThread2");*/
-        Thread thread1 = new Thread(new Runnable() {
+/*        Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 method1.runNonStatic();
@@ -56,9 +57,22 @@ public class SyncApp {
             public void run() {
                 method2.runNonStatic();
             }
+        }, "SyncThread2");*/
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SyncMethod.run(); // runNonStatic();
+            }
+        }, "SyncThread1");
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                method1.runSyncClass(); //.runNonStatic();
+            }
         }, "SyncThread2");
-        thread1.start();
+
         thread2.start();
+        thread1.start();
     }
 
     /**
@@ -101,11 +115,11 @@ public class SyncApp {
         Map<String, String> map = Collections.synchronizedMap(new HashMap<String, String>());
 
         System.out.println("before add map");
-        addMap(conmap);
+        addMap(concurrentMap);
         System.out.println("after add map");
         Thread.sleep(1000);
         //synchronized (map) {
-        conmap.put("testt22", "testvalue22");
+        concurrentMap.put("testt22", "testvalue22");
 
         //}
 

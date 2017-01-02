@@ -1,5 +1,7 @@
 package com.tgzhao.clannad.concurrent.queue;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.Random;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
@@ -37,6 +39,8 @@ public class TestDelayQueue {
 
     }
     public static void main(String[] args)throws Exception {
+        //FileInputStream inputStream = new FileInputStream()
+        //BufferedInputStream
         Random random=new Random();
         DelayQueue<Stadium> queue=new DelayQueue<Stadium>();
         TestDelayQueue t=new TestDelayQueue();
