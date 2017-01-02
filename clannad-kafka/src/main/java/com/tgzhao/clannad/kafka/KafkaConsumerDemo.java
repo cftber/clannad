@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tgzhao on 2016/10/13.
+ * 参考链接：
+ * http://zqhxuyuan.github.io/2016/02/20/Kafka-Consumer-New/
  */
 public class KafkaConsumerDemo {
 
@@ -68,6 +70,7 @@ public class KafkaConsumerDemo {
         @Override
         public void run() {
             try {
+                // topic订阅
                 consumer.subscribe(topics);
 
                 while (true) {
@@ -76,7 +79,9 @@ public class KafkaConsumerDemo {
                         Map<String, Object> data = new HashMap<>();
                         data.put("partition", record.partition());
                         data.put("offset", record.offset());
+                        data.put("key", record.key());
                         data.put("value", record.value());
+
                         System.out.println(this.id + ": " + data);
                     }
                 }

@@ -17,6 +17,7 @@
         <module>clannad-unittest</module>
         <module>clannad-core</module>
         <module>clannad-kafka</module>
+        <module>clannad-akka</module>
     </modules>
 
     <properties>

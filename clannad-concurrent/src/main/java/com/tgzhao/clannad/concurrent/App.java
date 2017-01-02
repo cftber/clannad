@@ -1,10 +1,14 @@
 package com.tgzhao.clannad.concurrent;
 
+import com.tgzhao.clannad.concurrent.sync.SyncMethod2;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by tgzhao on 2016/8/29.
@@ -30,8 +34,28 @@ public class App {
         }
         @Override
         public String call() throws Exception {
+            final SyncMethod2 syncMethod2 = new SyncMethod2();
+            ExecutorService es = Executors.newFixedThreadPool(2);
+
+            es.submit(new Runnable() {
+                @Override
+                public void run() {
+                    syncMethod2.incAndGet1();
+                }
+            });
+            es.submit(new Runnable() {
+                @Override
+                public void run() {
+                    syncMethod2.incAndGet2();
+                    //SyncMethod2.incAndGet4();
+                }
+            });
+            es.shutdown();
             return null;
         }
+
+
+
     }
 
     public static void ScheduledExecutorDemoTest() {
